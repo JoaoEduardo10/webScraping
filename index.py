@@ -1,9 +1,13 @@
 from selenium.webdriver.common.by import By 
-from config.configSelenium import ConfigFirefoxSelenium
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
 from services.get_companies import Companies
+
+from config.configSelenium import ConfigFirefoxSelenium
+
+import pandas
+
 import time
 
 firefoxDriver = ConfigFirefoxSelenium()
@@ -20,7 +24,7 @@ driver.get(url)
 search = driver.find_element(By.ID, 'searchboxinput')
 
 
-query = "pet shops teresina, Pi"
+query = "Encontrar pet shops e hospitais para animais em Teresina, Piauí."
 
 
 search.send_keys(query)
@@ -53,11 +57,17 @@ if(keepScrolling == False):
 
     companies = Companies()
 
-    allSearchs = companies.get(searchs)
+    try:
+        allSearchs = companies.get(searchs)
 
-    print(allSearchs)
+        df = pandas.DataFrame(allSearchs)
+        df.to_csv("../../Downloads/todo_os_petShops.csv", encoding="utf-8")
+        driver.close()
+    except Exception as error:
+        print("não foi possvel buscar " + str(error))
+        driver.close()
 
-    driver.close()
+    
 
     
 
