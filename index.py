@@ -1,12 +1,7 @@
-from selenium import webdriver
 from selenium.webdriver.common.by import By 
-from config.configSelenium import ConfigSelenium
-from selenium.webdriver.firefox.service import Service as Firefox
+from config.configSelenium import ConfigFirefoxSelenium
 
-service =  Firefox()
-options = webdriver.FirefoxOptions()
-
-firefoxDriver = ConfigSelenium(service=service, options=options)
+firefoxDriver = ConfigFirefoxSelenium()
 
 driver = firefoxDriver.get_driver_firefox()
 

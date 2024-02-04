@@ -1,7 +1,13 @@
 from selenium import webdriver
+from selenium import webdriver
 
-class ConfigSelenium:
-    def __init__(self, service, options):
+from selenium.webdriver.firefox.service import Service as Firefox
+
+service =  Firefox()
+options = webdriver.FirefoxOptions()
+
+class ConfigFirefoxSelenium:
+    def __init__(self):
         self.__options__ = options
         self.__service__ = service   
     
