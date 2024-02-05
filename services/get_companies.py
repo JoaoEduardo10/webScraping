@@ -15,13 +15,20 @@ class Companies:
 
         for result in searchs:
             self.__punctuation__ = result.find_element(By.CLASS_NAME, "MW4etd").text if result.find_elements(By.CLASS_NAME, "MW4etd") else "Sem pontuação"
-            self.__name__ = result.find_element(By.CLASS_NAME, "fontHeadlineSmall").text
+            
+            try:
+                self.__name__ = result.find_element(By.CLASS_NAME, "fontHeadlineSmall").text
+            except:
+                self.__name__ = "Sem nome"
 
             company_type_with_address_elements = result.find_elements(By.CLASS_NAME, "W4Efsd")
 
             company_type_with_address_texts = company_type_with_address_elements[2].text.split(" · ")
 
-            self.__companyType__ = company_type_with_address_texts[0]
+            try:
+                self.__companyType__ = company_type_with_address_texts[0]
+            except:
+                self.__companyType__ = "Sem tipo"
 
             try:
                 self.__address__ = company_type_with_address_texts[1]
