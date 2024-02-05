@@ -4,15 +4,15 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
 from services.get_companies import Companies
 
-from config.configSelenium import ConfigFirefoxSelenium
+from config.configSelenium import ConfigSelenium
 
 import pandas
 
 import time
 
-firefoxDriver = ConfigFirefoxSelenium()
+configSelenium = ConfigSelenium()
 
-driver = firefoxDriver.get_driver_firefox()
+driver = configSelenium.get_driver()
 
 
 url = "https://www.google.com.br/maps/@-5.1052418,-42.834512,13z?entry=ttu";
@@ -29,10 +29,7 @@ query = "Encontrar pet shops e hospitais para animais em Teresina, Piauí."
 
 search.send_keys(query)
 
-button_get = driver.find_element(By.CLASS_NAME, "google-symbols")
-
-button_get.click()
-
+search.send_keys(Keys.ENTER)
 
 wait = WebDriverWait(driver, 59)
 
@@ -40,6 +37,7 @@ prev_search_count = len(wait.until(EC.presence_of_all_elements_located((By.CLASS
 sidebar = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, f"div[aria-label='Resultados para {query}']")))
 
 keepScrolling = True
+quantity = 10
 
 while keepScrolling:
     sidebar.send_keys(Keys.PAGE_DOWN)
@@ -48,6 +46,12 @@ while keepScrolling:
     time.sleep(0.5)
 
     html =driver.find_element(By.TAG_NAME, "html").get_attribute('outerHTML')
+
+    searchs = wait.until(EC.presence_of_all_elements_located((By.CLASS_NAME, "CpccDe")))
+
+    if(quantity == len(searchs) and quantity != 0):
+        keepScrolling = False
+
     if(html.find("Você chegou ao final da lista.")!=-1):
         keepScrolling=False
 
